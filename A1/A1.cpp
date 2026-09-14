@@ -63,7 +63,7 @@ Vector4d discrete_step(const Vector4d& x, double h)
 int main()
 {
     double v0 = 20.0;
-    double alpha_deg = 45.0;
+    double alpha_deg = 75;
     double h = 0.01;
 
     double alpha = alpha_deg * M_PI / 180.0;
@@ -81,7 +81,6 @@ int main()
     // -----------------------------
     // Save simulation data
     // -----------------------------
-
     std::ofstream file("results.csv");
 
     file << "time,"
