@@ -1,6 +1,4 @@
 #include <Eigen/Dense>
-// 123123
-//456456
 #include <cmath>
 #include <cstdlib>
 #include <fstream>
