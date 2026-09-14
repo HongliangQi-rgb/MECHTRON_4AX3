@@ -5,22 +5,18 @@
 #include <iostream>
 
 using namespace Eigen;
-
 const double g = 9.81;
-
-typedef Vector4d State;
-
 
 // Continuous system:
 // x_dot = A*x + b
-State derivative(const State& x)
+Vector4d derivative(const Vector4d& x)
 {
     Matrix4d A = Matrix4d::Zero();
 
     A(0, 1) = 1.0;
     A(2, 3) = 1.0;
 
-    State b;
+    Vector4d b;
     b << 0.0,
          0.0,
          0.0,
@@ -31,12 +27,12 @@ State derivative(const State& x)
 
 
 // RK4
-State rk4_step(const State& x, double h)
+Vector4d rk4_step(const Vector4d& x, double h)
 {
-    State k1 = derivative(x);
-    State k2 = derivative(x + h * k1 / 2.0);
-    State k3 = derivative(x + h * k2 / 2.0);
-    State k4 = derivative(x + h * k3);
+    Vector4d k1 = derivative(x);
+    Vector4d k2 = derivative(x + h * k1 / 2.0);
+    Vector4d k3 = derivative(x + h * k2 / 2.0);
+    Vector4d k4 = derivative(x + h * k3);
 
     return x + h * (k1 + 2.0*k2 + 2.0*k3 + k4) / 6.0;
 }
@@ -44,7 +40,7 @@ State rk4_step(const State& x, double h)
 
 // Discrete system:
 // x[k+1] = Ad*x[k] + bd
-State discrete_step(const State& x, double h)
+Vector4d discrete_step(const Vector4d& x, double h)
 {
     Matrix4d Ad;
 
@@ -53,7 +49,7 @@ State discrete_step(const State& x, double h)
           0.0, 0.0, 1.0, h,
           0.0, 0.0, 0.0, 1.0;
 
-    State bd;
+    Vector4d bd;
 
     bd << 0.0,
           0.0,
@@ -72,15 +68,15 @@ int main()
 
     double alpha = alpha_deg * M_PI / 180.0;
 
-    State x0;
+    Vector4d x0;
 
     x0 << 0.0,
           v0 * cos(alpha),
           0.0,
           v0 * sin(alpha);
 
-    State continuous = x0;
-    State discrete = x0;
+    Vector4d continuous = x0;
+    Vector4d discrete = x0;
 
     // -----------------------------
     // Save simulation data
@@ -110,11 +106,6 @@ int main()
 
     file.close();
 
-
-    // -----------------------------
-    // Create gnuplot script
-    // -----------------------------
-
     std::ofstream plot("plot.gp");
 
     plot << "set terminal pngcairo size 1000,600\n";
@@ -137,10 +128,6 @@ int main()
 
     plot.close();
 
-
-    // -----------------------------
-    // Run gnuplot
-    // -----------------------------
 
     int result = std::system("gnuplot plot.gp");
 
