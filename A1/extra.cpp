@@ -13,7 +13,6 @@ private:
     VectorXd x;
 
 public:
-    // Constructor
     LTISystem(const MatrixXd& A_,
               const MatrixXd& B_,
               const MatrixXd& C_)
@@ -23,25 +22,21 @@ public:
         C = C_;
     }
 
-    // Set initial state
     void init(const VectorXd& x0)
     {
         x = x0;
     }
 
-    // Update state: x[k+1] = A*x[k] + B*u[k]
     void update(const VectorXd& u)
     {
         x = A * x + B * u;
     }
 
-    // Return current state
     VectorXd state()
     {
         return x;
     }
 
-    // Return output: y = C*x
     VectorXd output()
     {
         return C * x;
@@ -63,20 +58,13 @@ int main()
 
     C << 1.0, 0.0;
 
-    // Create system
     LTISystem sys(A, B, C);
-
-    // Initial state
     VectorXd x0(2);
     x0 << 0.0, 0.0;
-
     sys.init(x0);
-
-    // Input
     VectorXd u(1);
     u << 1.0;
 
-    // Simulate for 10 steps
     for (int k = 0; k < 10; k++)
     {
         std::cout << "k = " << k << "\n";
