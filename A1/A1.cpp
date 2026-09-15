@@ -7,8 +7,6 @@
 using namespace Eigen;
 const double g = 9.81;
 
-// Continuous system:
-// x_dot = A*x + b
 Vector4d derivative(const Vector4d& x)
 {
     Matrix4d A = Matrix4d::Zero();
@@ -25,8 +23,6 @@ Vector4d derivative(const Vector4d& x)
     return A * x + b;
 }
 
-
-// RK4
 Vector4d rk4_step(const Vector4d& x, double h)
 {
     Vector4d k1 = derivative(x);
@@ -37,9 +33,6 @@ Vector4d rk4_step(const Vector4d& x, double h)
     return x + h * (k1 + 2.0*k2 + 2.0*k3 + k4) / 6.0;
 }
 
-
-// Discrete system:
-// x[k+1] = Ad*x[k] + bd
 Vector4d discrete_step(const Vector4d& x, double h)
 {
     Matrix4d Ad;
@@ -78,9 +71,6 @@ int main()
     Vector4d continuous = x0;
     Vector4d discrete = x0;
 
-    // -----------------------------
-    // Save simulation data
-    // -----------------------------
     std::ofstream file("results.csv");
 
     file << "time,"
