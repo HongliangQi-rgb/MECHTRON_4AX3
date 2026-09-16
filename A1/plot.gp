@@ -7,4 +7,4 @@ set ylabel 'Vertical Position (m)'
 set grid
 set key top right
 plot 'results.csv' every ::1 using 2:3 with lines title 'Continuous (RK4)', \
-     'results.csv' every 10::1 using 4:5 with points title 'Discrete'
+     'results.csv' every 5::1 using 4:5 with points title 'Discrete'
